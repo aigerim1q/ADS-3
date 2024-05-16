@@ -1,10 +1,10 @@
-import java.util.Random;
+import java.lang.reflect.Array;
 
 public class MyHashTable<K, V> {
-    private static class HashNode<K, V> {
+    static class HashNode<K, V> {
         private K key;
         private V value;
-        private HashNode<K, V> next;
+        HashNode<K, V> next;
 
         public HashNode(K key, V value) {
             this.key = key;
@@ -16,17 +16,17 @@ public class MyHashTable<K, V> {
         }
     }
 
-    private HashNode<K, V>[] chainArray;
+    HashNode<K, V>[] chainArray;
     private int M = 11;
     private int size;
 
     public MyHashTable() {
-        chainArray = (HashNode<K, V>[]) new HashNode[M];
+        chainArray = (HashNode<K, V>[]) Array.newInstance(HashNode.class, M);
     }
 
     public MyHashTable(int M) {
         this.M = M;
-        chainArray = (HashNode<K, V>[]) new HashNode[M];
+        chainArray = (HashNode<K, V>[]) Array.newInstance(HashNode.class, M);
     }
 
     private int hash(K key) {
@@ -112,6 +112,8 @@ public class MyHashTable<K, V> {
         }
         return null;
     }
+
+    public int getSize() {
+        return size;
+    }
 }
-
-
