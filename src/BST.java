@@ -44,10 +44,43 @@ public class BST<K extends Comparable<K>, V> implements Iterable<BST.Entry<K, V>
         return null;
     }
 
+    public void delete(K key) {
+        root = delete(root, key);
+    }
+
+    private Node delete(Node x, K key) {
+        if (x == null) return null;
+        int cmp = key.compareTo(x.key);
+        if (cmp < 0) x.left = delete(x.left, key);
+        else if (cmp > 0) x.right = delete(x.right, key);
+        else {
+            if (x.left == null) return x.right;
+            if (x.right == null) return x.left;
+            Node t = x;
+            x = min(t.right);
+            x.right = deleteMin(t.right);
+            x.left = t.left;
+        }
+        size--;
+        return x;
+    }
+
+    private Node min(Node x) {
+        if (x.left == null) return x;
+        else return min(x.left);
+    }
+
+    private Node deleteMin(Node x) {
+        if (x.left == null) return x.right;
+        x.left = deleteMin(x.left);
+        return x;
+    }
+
     public int size() {
         return size;
     }
 
+    @Override
     public Iterator<Entry<K, V>> iterator() {
         List<Entry<K, V>> list = new ArrayList<>();
         inorder(root, list);
@@ -61,17 +94,16 @@ public class BST<K extends Comparable<K>, V> implements Iterable<BST.Entry<K, V>
         inorder(x.right, list);
     }
 
-    public static void main(String[] args) {
-        BST<Integer, String> tree = new BST<>();
-        tree.put(3, "Three");
-        tree.put(1, "One");
-        tree.put(2, "Two");
-        tree.put(5, "Five");
-        tree.put(4, "Four");
-
-        for (Entry<Integer, String> entry : tree) {
-            System.out.println("key is " + entry.getKey() + " and value is " + entry.getValue());
+    public void inOrder() {
+        List<Entry<K, V>> list = new ArrayList<>();
+        inorder(root, list);
+        for (Entry<K, V> entry : list) {
+            System.out.print(entry.getKey() + " ");
         }
+    }
+
+    public V getRootValue() {
+        return root != null ? root.val : null;
     }
 
     public static class Entry<K, V> {
