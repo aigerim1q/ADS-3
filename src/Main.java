@@ -1,16 +1,27 @@
+import java.util.Random;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
-    public static void main(String[] args) {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            System.out.println("i = " + i);
+    public static void main(String[] args) {
+        // Test MyHashTable
+        MyHashTable<MyTestingClass, String> table = new MyHashTable<>();
+
+        Random rand = new Random();
+        for (int i = 0; i < 10000; i++) {
+            int id = rand.nextInt(100000);
+            String name = "Name" + id;
+            MyTestingClass key = new MyTestingClass(id, name);
+            table.put(key, "Student" + i);
+        }
+
+        for (int i = 0; i < table.chainArray.length; i++) {
+            int count = 0;
+            MyHashTable.HashNode<MyTestingClass, String> current = ((MyHashTable<MyTestingClass, String>) table).chainArray[i];
+            while (current != null) {
+                count++;
+                current = current.next;
+            }
+            System.out.println("Bucket " + i + ": " + count + " elements");
         }
     }
 }
