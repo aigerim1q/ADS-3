@@ -36,17 +36,21 @@ public class MyHashTable<K, V> {
     public void put(K key, V value) {
         int index = hash(key);
         HashNode<K, V> newNode = new HashNode<>(key, value);
-        if (chainArray[index] == null) {
+        HashNode<K, V> current = chainArray[index];
+
+        if (current == null) {
             chainArray[index] = newNode;
         } else {
-            HashNode<K, V> current = chainArray[index];
-            while (current.next != null) {
+            HashNode<K, V> prev = null;
+            while (current != null) {
                 if (current.key.equals(key)) {
                     current.value = value;
+                    return;
                 }
+                prev = current;
                 current = current.next;
             }
-            current.next = newNode;
+            prev.next = newNode;
         }
         size++;
     }
@@ -108,32 +112,6 @@ public class MyHashTable<K, V> {
         }
         return null;
     }
-    public static void main(String[] args) {
-        MyHashTable<MyTestingClass, Integer> table = new MyHashTable<>();
-        Random random = new Random();
-        for (int i = 0; i < 10000; i++) {
-            table.put(new MyTestingClass(random.nextInt(1000000)), i);
-        }
-        for (int i = 0; i < table.chainArray.length; i++) {
-            HashNode<MyTestingClass, Integer> node = table.chainArray[i];
-            int count = 0;
-            while (node != null) {
-                count++;
-                node = node.next;
-            }
-            System.out.println("Bucket " + i + ": " + count + " elements");
-        }
-    }
 }
 
-class MyTestingClass {
-    private int value;
 
-    public MyTestingClass(int value) {
-        this.value = value;
-    }
-
-    public int hashCode() {
-        return value % 11;
-    }
-}
