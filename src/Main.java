@@ -3,7 +3,24 @@ import java.util.Random;
 public class Main {
 
     public static void main(String[] args) {
-        // Test MyHashTable
+        // Test BST
+        BST<Integer, String> binaryTree = new BST<>();
+        binaryTree.put(5, "Five");
+        binaryTree.put(3, "Three");
+        binaryTree.put(4, "Four");
+        binaryTree.put(2, "Two");
+        binaryTree.put(6, "Six");
+        binaryTree.put(7, "Seven");
+
+        binaryTree.inOrder();
+        System.out.println();
+        System.out.println("Root data before remove: " + binaryTree.getRootValue());
+        binaryTree.delete(5);
+        System.out.println();
+        binaryTree.inOrder();
+        System.out.println();
+        System.out.println("Root data after remove: " + binaryTree.getRootValue());
+
         MyHashTable<MyTestingClass, String> table = new MyHashTable<>();
 
         Random rand = new Random();
@@ -16,7 +33,7 @@ public class Main {
 
         for (int i = 0; i < table.chainArray.length; i++) {
             int count = 0;
-            MyHashTable.HashNode<MyTestingClass, String> current = ((MyHashTable<MyTestingClass, String>) table).chainArray[i];
+            MyHashTable.HashNode<MyTestingClass, String> current = table.chainArray[i];
             while (current != null) {
                 count++;
                 current = current.next;
